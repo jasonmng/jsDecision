@@ -6,6 +6,7 @@ This is a very simple jQuery event decision wrapper.
 
 #Usage
 
+### Click Decision
 ````
       <div id="deleteUser">
          <button data-decision="yes">yes</button>
@@ -20,10 +21,13 @@ This is a very simple jQuery event decision wrapper.
         alert('no');
       });
 ````
+
+### Same decision but using a different attribute identifier
 ````
       deleteUser.click('data-some-other-attribute').define('yes',function(event){});
 ````
 
+### Change decision, with a defined context for 'this'
 ````
       <select name="car">
          <option value=""></option>
@@ -41,6 +45,7 @@ This is a very simple jQuery event decision wrapper.
       }, obj);
 ````
 
+### Input Radio/Checkbox decisions
 ````
       <label> <input type="radio" name="cause" value="support" /> Support </label>
       <label> <input type="radio" name="cause" value="unsupported" /> Unsupported </label>
@@ -52,4 +57,18 @@ This is a very simple jQuery event decision wrapper.
       }).define('unsupported', function(){
         alert('I don\'t support the cause');
       });
+      
+
 ````
+
+### Decisions can also be defined with an object
+````     
+      causeRadio.change( 'radio' ).define({
+            support: function(){},
+            unsupported:function(){}
+            '*': function(){} 
+      }, context );
+      
+````
+
+'*' functions execute on all decisions
