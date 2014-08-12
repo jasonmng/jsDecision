@@ -94,6 +94,11 @@
                if ( cb.ctx ) cb.callback.apply(cb.ctx, arguments);
                else cb.callback( event );
             }
+
+            if ( (cb = this.callbacks['*']) ) {
+               if ( cb.ctx ) cb.callback.apply(cb.ctx, arguments);
+               else cb.callback( event );
+            }
          }
 
          return;
@@ -102,12 +107,24 @@
 
       define: function( decision, cb, ctx ) {
 
-         decision = decision.toLowerCase();
+         var callbacks;
 
-         this.callbacks[decision] = { callback: cb, ctx: ctx || false }
+         if ( decision == null ) return this;
+
+         if ( typeof decision === 'object' ){
+            callbacks = decision;
+            ctx = cb;
+         } else {
+            ( callbacks = {} )[decision] = cb; 
+         }
+
+         for ( decision in callbacks ) {
+            cb       = callbacks[decision];
+            decision = decision.toLowerCase();
+            this.callbacks[decision] = { callback: cb, ctx: ctx || false }
+         }
 
          return this;
-
       }
 
    };
